@@ -23,6 +23,18 @@ export default function DashboardPage() {
       description: 'Plan your day and schedule events.',
       path: '/planner', 
       icon: '📅'
+    },
+    { 
+      title: 'Progress Tracker', 
+      description: 'Set goals and track your progress over time.',
+      path: '/progress', 
+      icon: '🎯'
+    },
+    { 
+      title: 'Gym Tracker', 
+      description: 'Log workouts, track exercises, and monitor fitness progress.',
+      path: '/gym', 
+      icon: '💪'
     }
   ];
 

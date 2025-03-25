@@ -9,7 +9,8 @@ import {
   where, 
   orderBy, 
   serverTimestamp, 
-  Timestamp 
+  Timestamp,
+  getDoc
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -103,6 +104,27 @@ export async function deleteTodo(todoId: string) {
     return { success: true, id: todoId };
   } catch (error) {
     console.error('Error deleting todo:', error);
+    throw error;
+  }
+}
+
+/**
+ * Get a specific todo by ID
+ */
+export async function getTodoById(todoId: string) {
+  try {
+    const todoDoc = await getDoc(doc(db, 'todos', todoId));
+    
+    if (!todoDoc.exists()) {
+      return null;
+    }
+    
+    return {
+      id: todoDoc.id,
+      ...todoDoc.data()
+    } as Todo;
+  } catch (error) {
+    console.error('Error getting todo:', error);
     throw error;
   }
 } 

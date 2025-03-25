@@ -14,6 +14,8 @@ const navItems = [
   { name: 'Notes', path: '/notes', icon: '📝' },
   { name: 'To-Do List', path: '/todos', icon: '✓' },
   { name: 'Planner', path: '/planner', icon: '📅' },
+  { name: 'Progress Tracker', path: '/progress', icon: '🎯' },
+  { name: 'Gym Tracker', path: '/gym', icon: '💪' }
 ];
 
 export default function DashboardLayout({
