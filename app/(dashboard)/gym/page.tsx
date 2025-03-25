@@ -8,7 +8,7 @@ import {
   getUserWorkoutSessions, 
   getUserWorkoutRoutines 
 } from '@/lib/firebase/workouts';
-import { Exercise, getExercises } from '@/lib/firebase/exercises';
+import { getExercises, Exercise } from '@/lib/firebase/exercises';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,6 +20,7 @@ import { InitializeButton } from '@/components/gym/InitializeButton';
 import { format } from 'date-fns';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 export default function GymTrackerPage() {
   const { user } = useAuth();
@@ -34,13 +35,13 @@ export default function GymTrackerPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user) return;
-      
       try {
+        if (!user) return;
+
         const [workoutsData, routinesData, exercisesData] = await Promise.all([
           getUserWorkoutSessions(user.uid),
           getUserWorkoutRoutines(user.uid),
-          getExercises(user.uid)
+          getExercises()
         ]);
         
         setWorkouts(workoutsData);
@@ -49,6 +50,7 @@ export default function GymTrackerPage() {
         setNeedsInitialization(exercisesData.length === 0);
       } catch (error) {
         console.error('Error fetching data:', error);
+        toast.error('Failed to load data');
       } finally {
         setLoading(false);
       }
@@ -74,7 +76,7 @@ export default function GymTrackerPage() {
   const handleExerciseSuccess = () => {
     setShowExerciseDialog(false);
     if (user) {
-      getExercises(user.uid).then(setExercises);
+      getExercises().then(setExercises);
     }
   };
 

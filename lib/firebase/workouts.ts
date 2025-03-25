@@ -325,4 +325,118 @@ export async function updateWorkoutSession(sessionId: string, sessionData: Parti
     console.error('Error updating workout session:', error);
     throw error;
   }
+}
+
+/**
+ * Update an exercise set
+ */
+export async function updateExerciseSet(setId: string, setData: Partial<Omit<ExerciseSet, 'id' | 'workoutSessionId' | 'userId' | 'createdAt'>>) {
+  try {
+    const setRef = doc(db, 'exerciseSets', setId);
+    await updateDoc(setRef, setData);
+    return { success: true, id: setId };
+  } catch (error) {
+    console.error('Error updating exercise set:', error);
+    throw error;
+  }
+}
+
+/**
+ * Delete an exercise set
+ */
+export async function deleteExerciseSet(setId: string) {
+  try {
+    const setRef = doc(db, 'exerciseSets', setId);
+    await deleteDoc(setRef);
+    return { success: true, id: setId };
+  } catch (error) {
+    console.error('Error deleting exercise set:', error);
+    throw error;
+  }
+}
+
+/**
+ * Toggle exercise set completion status
+ */
+export async function toggleSetCompletion(setId: string, completed: boolean) {
+  try {
+    const setRef = doc(db, 'exerciseSets', setId);
+    await updateDoc(setRef, { completed });
+    return { success: true, id: setId };
+  } catch (error) {
+    console.error('Error toggling set completion:', error);
+    throw error;
+  }
+}
+
+/**
+ * Mark exercise set as personal record
+ */
+export async function markSetAsPR(setId: string, isPR: boolean) {
+  try {
+    const setRef = doc(db, 'exerciseSets', setId);
+    await updateDoc(setRef, { isPersonalRecord: isPR });
+    return { success: true, id: setId };
+  } catch (error) {
+    console.error('Error marking set as PR:', error);
+    throw error;
+  }
+}
+
+/**
+ * Calculate workout statistics
+ */
+export interface WorkoutStats {
+  totalVolume: number;
+  totalSets: number;
+  totalExercises: number;
+  duration: number;
+  personalRecords: number;
+}
+
+export async function getWorkoutStats(workoutSessionId: string): Promise<WorkoutStats> {
+  try {
+    const sets = await getExerciseSetsForWorkout(workoutSessionId);
+    const workout = await getWorkoutSessionById(workoutSessionId);
+    
+    if (!workout) {
+      throw new Error('Workout session not found');
+    }
+    
+    const totalVolume = sets.reduce((sum, set) => sum + (set.weight * set.reps), 0);
+    const personalRecords = sets.filter(set => set.isPersonalRecord).length;
+    
+    return {
+      totalVolume,
+      totalSets: sets.length,
+      totalExercises: new Set(sets.map(set => set.exerciseId)).size,
+      duration: workout.duration || 0,
+      personalRecords
+    };
+  } catch (error) {
+    console.error('Error calculating workout stats:', error);
+    throw error;
+  }
+}
+
+/**
+ * Calculate one-rep max for a set
+ */
+export function calculateOneRepMax(weight: number, reps: number): number {
+  // Brzycki Formula
+  return weight * (36 / (37 - reps));
+}
+
+/**
+ * Calculate volume for a set
+ */
+export function calculateSetVolume(weight: number, reps: number): number {
+  return weight * reps;
+}
+
+/**
+ * Calculate time under tension
+ */
+export function calculateTimeUnderTension(reps: number, secondsPerRep: number = 3): number {
+  return reps * secondsPerRep;
 } 

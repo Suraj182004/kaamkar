@@ -14,6 +14,9 @@ import { Plus, ArrowLeft, Pencil, Trash2, CheckCircle2, Circle } from 'lucide-re
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { ExerciseSetManager } from '@/components/gym/ExerciseSetManager';
+import { WorkoutStats } from '@/components/gym/WorkoutStats';
+import { RestTimer } from '@/components/gym/RestTimer';
 
 interface WorkoutDetailsPageProps {
   params: Promise<{
@@ -312,6 +315,32 @@ export default function WorkoutDetailsPage({ params }: WorkoutDetailsPageProps) 
           </Card>
         )}
       </div>
+
+      <RestTimer />
+
+      <WorkoutStats workoutId={workoutId} />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Exercise Sets</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {workout.sets && workout.sets.map((set: ExerciseSet) => (
+            <div key={set.id} className="mb-6">
+              <h3 className="text-lg font-semibold mb-2">{exercises[set.exerciseId]?.name || 'Unknown Exercise'}</h3>
+              <ExerciseSetManager
+                workoutId={workoutId}
+                exerciseId={set.exerciseId}
+                sets={[set]}
+                onSetUpdate={() => {
+                  // Refresh workout data
+                  fetchWorkout();
+                }}
+              />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 } 
