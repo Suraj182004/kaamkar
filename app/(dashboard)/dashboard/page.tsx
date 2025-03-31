@@ -94,7 +94,7 @@ export default function DashboardPage() {
           icon="✓"
         />
         <StatCard
-          title="Today&apos;s Events"
+          title="Today's Events"
           value={stats.planner.today}
           subtitle={`${stats.planner.upcoming} upcoming events`}
           icon="📅"

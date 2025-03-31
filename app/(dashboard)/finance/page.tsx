@@ -30,7 +30,6 @@ export default function FinancePage() {
   
   const [showTransactionDialog, setShowTransactionDialog] = useState(false);
   const [showBudgetDialog, setShowBudgetDialog] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   
   // Get current month in YYYY-MM format
   const currentMonth = format(new Date(), 'yyyy-MM');

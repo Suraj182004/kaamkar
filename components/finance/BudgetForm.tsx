@@ -49,7 +49,6 @@ const generateMonthOptions = () => {
   const options = [];
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
   
   // Previous year
   for (let month = 0; month < 12; month++) {
