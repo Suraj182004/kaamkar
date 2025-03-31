@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, CalendarIcon, FileText, PiggyBank, BookOpen, Settings, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, CalendarIcon, FileText, PiggyBank, BookOpen, BarChart2 } from 'lucide-react';
 
 const navItems = [
   {
@@ -11,8 +11,8 @@ const navItems = [
     icon: <LayoutDashboard />
   },
   {
-    name: 'Calendar',
-    path: '/calendar',
+    name: 'Planner',
+    path: '/planner',
     icon: <CalendarIcon />
   },
   {
@@ -31,14 +31,9 @@ const navItems = [
     icon: <PiggyBank />
   },
   {
-    name: 'Blog',
-    path: '/blog',
-    icon: <MessageSquare />
-  },
-  {
-    name: 'Settings',
-    path: '/settings',
-    icon: <Settings />
+    name: 'Progress',
+    path: '/progress',
+    icon: <BarChart2 />
   }
 ];
 
