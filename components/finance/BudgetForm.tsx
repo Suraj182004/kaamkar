@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Timestamp } from 'firebase/firestore';
 import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button';
@@ -93,15 +92,12 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get the current month in YYYY-MM format
-  const currentMonth = format(new Date(), 'yyyy-MM');
-
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: '',
       category: '',
-      month: currentMonth,
+      month: format(new Date(), 'yyyy-MM'),
       notes: '',
     },
   });
@@ -124,7 +120,7 @@ export function BudgetForm({ onSuccess, onCancel }: BudgetFormProps) {
       form.reset({
         amount: '',
         category: '',
-        month: currentMonth,
+        month: format(new Date(), 'yyyy-MM'),
         notes: '',
       });
       onSuccess?.();

@@ -29,7 +29,7 @@ import {
   Trash2,
   Pencil
 } from 'lucide-react';
-import { Transaction, DEFAULT_EXPENSE_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '@/lib/firebase/transactions';
+import { Transaction } from '@/lib/firebase/transactions';
 import { deleteTransaction } from '@/lib/firebase/transactions';
 import { toast } from 'sonner';
 

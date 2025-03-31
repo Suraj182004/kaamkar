@@ -29,34 +29,33 @@ export default function ProgressPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [categories, setCategories] = useState<string[]>([]);
 
-  // Fetch goals on component mount
   useEffect(() => {
     if (user) {
+      const fetchGoals = async () => {
+        if (!user) return;
+        
+        setLoading(true);
+        try {
+          const fetchedGoals = await getUserGoals(user.uid);
+          setGoals(fetchedGoals);
+          
+          // Extract unique categories for the filter
+          const uniqueCategories = Array.from(
+            new Set(fetchedGoals.map(goal => goal.category).filter(Boolean))
+          ) as string[];
+          
+          setCategories(uniqueCategories);
+        } catch (error) {
+          console.error('Error fetching goals:', error);
+          toast.error('Failed to load goals');
+        } finally {
+          setLoading(false);
+        }
+      };
+      
       fetchGoals();
     }
-  }, [user, fetchGoals]);
-
-  const fetchGoals = async () => {
-    if (!user) return;
-    
-    setLoading(true);
-    try {
-      const fetchedGoals = await getUserGoals(user.uid);
-      setGoals(fetchedGoals);
-      
-      // Extract unique categories for the filter
-      const uniqueCategories = Array.from(
-        new Set(fetchedGoals.map(goal => goal.category).filter(Boolean))
-      ) as string[];
-      
-      setCategories(uniqueCategories);
-    } catch (error) {
-      console.error('Error fetching goals:', error);
-      toast.error('Failed to load goals');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user]);
 
   const handleDeleteGoal = async (goalId: string) => {
     if (!user) return;
@@ -100,16 +99,38 @@ export default function ProgressPage() {
     setSelectedGoal(goal);
   };
 
+  const refreshGoals = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      const fetchedGoals = await getUserGoals(user.uid);
+      setGoals(fetchedGoals);
+      
+      // Extract unique categories for the filter
+      const uniqueCategories = Array.from(
+        new Set(fetchedGoals.map(goal => goal.category).filter(Boolean))
+      ) as string[];
+      
+      setCategories(uniqueCategories);
+    } catch (error) {
+      console.error('Error fetching goals:', error);
+      toast.error('Failed to load goals');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleFormSuccess = () => {
     setIsFormDialogOpen(false);
     setEditingGoal(null);
-    fetchGoals();
+    refreshGoals();
   };
 
   const handleProgressSuccess = () => {
     setIsProgressDialogOpen(false);
     setProgressGoal(null);
-    fetchGoals();
+    refreshGoals();
     
     // If we're viewing the goal that got updated, refresh the selected goal
     if (selectedGoal && progressGoal && selectedGoal.id === progressGoal.id) {

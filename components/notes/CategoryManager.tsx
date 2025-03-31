@@ -23,22 +23,22 @@ export default function CategoryManager({ selectedCategory, onSelectCategory }: 
 
   useEffect(() => {
     if (user) {
+      const fetchCategories = async () => {
+        if (!user) return;
+        try {
+          const fetchedCategories = await getUserCategories(user.uid);
+          setCategories(fetchedCategories);
+        } catch (error) {
+          console.error('Error fetching categories:', error);
+          toast.error('Failed to load categories');
+        } finally {
+          setLoading(false);
+        }
+      };
+      
       fetchCategories();
     }
-  }, [user, fetchCategories]);
-
-  const fetchCategories = async () => {
-    if (!user) return;
-    try {
-      const fetchedCategories = await getUserCategories(user.uid);
-      setCategories(fetchedCategories);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      toast.error('Failed to load categories');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user]);
 
   const handleAddCategory = async () => {
     if (!user || !newCategoryName.trim()) return;
@@ -51,7 +51,9 @@ export default function CategoryManager({ selectedCategory, onSelectCategory }: 
       });
       setNewCategoryName('');
       toast.success('Category added successfully');
-      fetchCategories();
+      
+      const fetchedCategories = await getUserCategories(user.uid);
+      setCategories(fetchedCategories);
     } catch (error) {
       console.error('Error adding category:', error);
       toast.error('Failed to add category');
@@ -67,7 +69,9 @@ export default function CategoryManager({ selectedCategory, onSelectCategory }: 
         onSelectCategory(null);
       }
       toast.success('Category deleted successfully');
-      fetchCategories();
+      
+      const fetchedCategories = await getUserCategories(user.uid);
+      setCategories(fetchedCategories);
     } catch (error) {
       console.error('Error deleting category:', error);
       toast.error('Failed to delete category');

@@ -1,19 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-
-const navItems = [
-  { name: 'Dashboard', path: '/dashboard', icon: '📊' },
-  { name: 'Notes', path: '/notes', icon: '📝' },
-  { name: 'To-Do List', path: '/todos', icon: '✓' },
-  { name: 'Planner', path: '/planner', icon: '📅' },
-  { name: 'Progress Tracker', path: '/progress', icon: '🎯' },
-  { name: 'Finance Tracker', path: '/finance', icon: '💰' }
-];
-
 export default function Sidebar() {
   const pathname = usePathname();
 

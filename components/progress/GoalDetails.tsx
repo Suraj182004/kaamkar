@@ -41,13 +41,10 @@ interface GoalDetailsProps {
 
 export function GoalDetails({ goal, onBack }: GoalDetailsProps) {
   const [progressUpdates, setProgressUpdates] = useState<ProgressUpdate[]>([]);
-  const [loading, setLoading] = useState(true);
   const [linkedTodos, setLinkedTodos] = useState<Todo[]>([]);
   
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      
       try {
         // Fetch progress updates
         const updates = await getProgressUpdatesForGoal(goal.id as string);
@@ -62,8 +59,6 @@ export function GoalDetails({ goal, onBack }: GoalDetailsProps) {
       } catch (error) {
         console.error('Error fetching goal details:', error);
         toast.error('Failed to load goal details');
-      } finally {
-        setLoading(false);
       }
     };
     

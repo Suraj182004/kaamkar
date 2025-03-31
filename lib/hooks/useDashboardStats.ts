@@ -37,10 +37,7 @@ export const useDashboardStats = () => {
         // Get today's start and end timestamps
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
         const todayStart = Timestamp.fromDate(today);
-        const todayEnd = Timestamp.fromDate(tomorrow);
 
         // Get last 7 days timestamp for recent notes
         const lastWeek = new Date();
@@ -80,7 +77,7 @@ export const useDashboardStats = () => {
         const todayEvents = eventsSnapshot.docs.filter(
           doc => {
             const eventDate = doc.data().date.toDate();
-            return eventDate >= today && eventDate < tomorrow;
+            return eventDate >= today;
           }
         ).length;
 

@@ -1,5 +1,5 @@
 import { db } from '@/lib/firebase';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where, orderBy, Timestamp, DocumentReference } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where, orderBy, Timestamp } from 'firebase/firestore';
 
 // Transaction type definition
 export interface Transaction {

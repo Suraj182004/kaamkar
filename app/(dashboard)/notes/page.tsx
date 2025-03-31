@@ -28,22 +28,22 @@ export default function NotesPage() {
 
   useEffect(() => {
     if (user) {
+      const fetchNotes = async () => {
+        if (!user) return;
+        try {
+          const fetchedNotes = await getUserNotes(user.uid);
+          setNotes(fetchedNotes);
+        } catch (error) {
+          console.error('Error fetching notes:', error);
+          toast.error('Failed to load notes');
+        } finally {
+          setLoading(false);
+        }
+      };
+      
       fetchNotes();
     }
-  }, [user, fetchNotes]);
-
-  const fetchNotes = async () => {
-    if (!user) return;
-    try {
-      const fetchedNotes = await getUserNotes(user.uid);
-      setNotes(fetchedNotes);
-    } catch (error) {
-      console.error('Error fetching notes:', error);
-      toast.error('Failed to load notes');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user]);
 
   const handleDelete = async (noteId: string) => {
     try {

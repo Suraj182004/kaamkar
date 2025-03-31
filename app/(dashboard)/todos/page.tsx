@@ -25,24 +25,24 @@ export default function TodosPage() {
   // Fetch todos on component mount
   useEffect(() => {
     if (user) {
+      const fetchTodos = async () => {
+        if (!user) return;
+        
+        try {
+          setLoading(true);
+          const userTodos = await getUserTodos(user.uid);
+          setTodos(userTodos);
+        } catch (error) {
+          console.error('Error fetching todos:', error);
+          toast.error('Failed to load todos');
+        } finally {
+          setLoading(false);
+        }
+      };
+
       fetchTodos();
     }
-  }, [user, fetchTodos]);
-
-  const fetchTodos = async () => {
-    if (!user) return;
-    
-    try {
-      setLoading(true);
-      const userTodos = await getUserTodos(user.uid);
-      setTodos(userTodos);
-    } catch (error) {
-      console.error('Error fetching todos:', error);
-      toast.error('Failed to load todos');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user]);
 
   const handleCreateTodo = async () => {
     if (!user) return;
