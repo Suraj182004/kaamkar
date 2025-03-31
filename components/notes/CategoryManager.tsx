@@ -63,6 +63,8 @@ export default function CategoryManager({ selectedCategory, onSelectCategory }: 
   };
 
   const handleDeleteCategory = async (categoryId: string) => {
+    if (!user) return;
+    
     try {
       await deleteCategory(categoryId);
       if (selectedCategory === categoryId) {
