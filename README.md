@@ -1,7 +1,5 @@
 # 🚀 KaamKar - Your All-in-One Productivity Suite
 
-![KaamKar Logo](https://kaamkar-ct31.onrender.com/logo.png)
-
 KaamKar is a comprehensive productivity suite designed to help you manage tasks, notes, finances, and goals. Stay organized, focused, and achieve more every day.
 
 **Live Demo:** [https://kaamkar-ct31.onrender.com/](https://kaamkar-ct31.onrender.com/)
