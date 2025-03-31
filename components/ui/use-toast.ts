@@ -34,15 +34,19 @@ type ActionTypes = typeof ACTION.ADD_TOAST | typeof ACTION.UPDATE_TOAST | typeof
 
 type Action =
   | {
-      type: ActionTypes
+      type: typeof ACTION.ADD_TOAST
       toast: ToasterToast
     }
   | {
-      type: ActionTypes
+      type: typeof ACTION.UPDATE_TOAST
       toast: Partial<ToasterToast>
     }
   | {
-      type: ActionTypes
+      type: typeof ACTION.DISMISS_TOAST
+      toastId?: ToasterToast["id"]
+    }
+  | {
+      type: typeof ACTION.REMOVE_TOAST
       toastId?: ToasterToast["id"]
     }
 
