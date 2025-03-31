@@ -5,6 +5,7 @@ import {
   deleteDoc, 
   doc, 
   getDocs, 
+  getDoc,
   query, 
   where, 
   orderBy, 
@@ -13,14 +14,37 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
+// Type for Note Category
+export interface NoteCategory {
+  id?: string;
+  name: string;
+  userId: string;
+  parentId?: string | null;
+  createdAt?: Timestamp;
+}
+
+// Type for Note Formatting
+export interface NoteFormatting {
+  backgroundColor?: string;
+  textColor?: string;
+  fontSize?: string;
+  isBold?: boolean;
+  isItalic?: boolean;
+  isUnderline?: boolean;
+  alignment?: 'left' | 'center' | 'right';
+}
+
 // Type for Note
 export interface Note {
   id?: string;
   title: string;
   content: string;
+  categoryId?: string | null;
+  formatting?: NoteFormatting;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
   userId: string;
+  tags?: string[];
 }
 
 /**
@@ -103,12 +127,65 @@ export async function deleteNote(noteId: string) {
  */
 export async function getNoteById(noteId: string) {
   try {
-    const noteDoc = await doc(db, 'notes', noteId);
-    // Note: This doesn't actually fetch the document
-    // We'll implement this when needed
-    return { id: noteId };
+    const noteRef = doc(db, 'notes', noteId);
+    const noteSnap = await getDoc(noteRef);
+    
+    if (!noteSnap.exists()) {
+      throw new Error('Note not found');
+    }
+    
+    return {
+      id: noteSnap.id,
+      ...noteSnap.data()
+    } as Note;
   } catch (error) {
     console.error('Error getting note:', error);
+    throw error;
+  }
+}
+
+// Add functions for category management
+export async function addCategory(category: Omit<NoteCategory, 'id' | 'createdAt'>) {
+  try {
+    const categoryWithTimestamp = {
+      ...category,
+      createdAt: serverTimestamp()
+    };
+    
+    const docRef = await addDoc(collection(db, 'noteCategories'), categoryWithTimestamp);
+    return { id: docRef.id, ...categoryWithTimestamp };
+  } catch (error) {
+    console.error('Error adding category:', error);
+    throw error;
+  }
+}
+
+export async function getUserCategories(userId: string) {
+  try {
+    const q = query(
+      collection(db, 'noteCategories'),
+      where('userId', '==', userId),
+      orderBy('createdAt', 'asc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as NoteCategory[];
+  } catch (error) {
+    console.error('Error getting categories:', error);
+    throw error;
+  }
+}
+
+export async function deleteCategory(categoryId: string) {
+  try {
+    const categoryRef = doc(db, 'noteCategories', categoryId);
+    await deleteDoc(categoryRef);
+    return { success: true, id: categoryId };
+  } catch (error) {
+    console.error('Error deleting category:', error);
     throw error;
   }
 } 

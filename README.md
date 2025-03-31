@@ -11,7 +11,7 @@ KaamKar is an all-in-one productivity application built with Next.js, Firebase, 
 - **Daily Planner**: Schedule your days and events
 - **AI Assistant**: Get intelligent suggestions and assistance using Google's Gemini 2.0 AI
 - **Progress Tracker**: (Coming soon) Monitor your goals and achievements
-- **Gym Tracker**: (Coming soon) Log and track your workouts
+- **Finance Tracker**: Track income, expenses, and manage your budgets
 - **Food Tracker**: (Coming soon) Monitor your diet and nutrition
 
 ## Tech Stack

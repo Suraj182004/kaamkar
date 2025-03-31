@@ -1,12 +1,10 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json'); // You need to download this from Firebase console
+import { initializeApp, cert } from 'firebase-admin/app';
+import serviceAccount from './serviceAccountKey.json' assert { type: 'json' };
 
 // Initialize the app
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+initializeApp({
+  credential: cert(serviceAccount)
 });
-
-const firestore = admin.firestore();
 
 async function createIndexes() {
   try {
@@ -14,75 +12,90 @@ async function createIndexes() {
     
     // Define all indexes
     const indexes = [
-      // workoutRoutines
+      // Notes
       {
-        collectionId: 'workoutRoutines',
+        collectionId: 'notes',
         fields: [
           { fieldPath: 'userId', order: 'ASCENDING' },
           { fieldPath: 'createdAt', order: 'DESCENDING' }
         ]
       },
-      
-      // workoutSessions
       {
-        collectionId: 'workoutSessions',
+        collectionId: 'notes',
         fields: [
           { fieldPath: 'userId', order: 'ASCENDING' },
-          { fieldPath: 'date', order: 'DESCENDING' }
-        ]
-      },
-      
-      // exerciseSets
-      {
-        collectionId: 'exerciseSets',
-        fields: [
-          { fieldPath: 'workoutSessionId', order: 'ASCENDING' },
-          { fieldPath: 'setNumber', order: 'ASCENDING' }
-        ]
-      },
-      {
-        collectionId: 'exerciseSets',
-        fields: [
-          { fieldPath: 'userId', order: 'ASCENDING' },
-          { fieldPath: 'exerciseId', order: 'ASCENDING' },
-          { fieldPath: 'isPersonalRecord', order: 'ASCENDING' },
+          { fieldPath: 'categoryId', order: 'ASCENDING' },
           { fieldPath: 'createdAt', order: 'DESCENDING' }
         ]
       },
       {
-        collectionId: 'exerciseSets',
+        collectionId: 'notes',
         fields: [
           { fieldPath: 'userId', order: 'ASCENDING' },
-          { fieldPath: 'exerciseId', order: 'ASCENDING' },
+          { fieldPath: 'updatedAt', order: 'DESCENDING' }
+        ]
+      },
+      {
+        collectionId: 'notes',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'title', order: 'ASCENDING' }
+        ]
+      },
+      
+      // Note Categories
+      {
+        collectionId: 'noteCategories',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'createdAt', order: 'ASCENDING' }
+        ]
+      },
+      {
+        collectionId: 'noteCategories',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'parentId', order: 'ASCENDING' },
+          { fieldPath: 'createdAt', order: 'ASCENDING' }
+        ]
+      },
+      {
+        collectionId: 'noteCategories',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'name', order: 'ASCENDING' }
+        ]
+      },
+      
+      // Tasks
+      {
+        collectionId: 'tasks',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'completed', order: 'ASCENDING' },
+          { fieldPath: 'dueDate', order: 'ASCENDING' }
+        ]
+      },
+      {
+        collectionId: 'tasks',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'completed', order: 'ASCENDING' },
+          { fieldPath: 'priority', order: 'DESCENDING' },
+          { fieldPath: 'dueDate', order: 'ASCENDING' }
+        ]
+      },
+      
+      // Progress Updates
+      {
+        collectionId: 'progressUpdates',
+        fields: [
+          { fieldPath: 'goalId', order: 'ASCENDING' },
           { fieldPath: 'createdAt', order: 'DESCENDING' }
         ]
       },
       
-      // exercises
-      {
-        collectionId: 'exercises',
-        fields: [
-          { fieldPath: 'isCustom', order: 'ASCENDING' },
-          { fieldPath: 'category', order: 'ASCENDING' }
-        ]
-      },
-      {
-        collectionId: 'exercises',
-        fields: [
-          { fieldPath: 'isCustom', order: 'ASCENDING' },
-          { fieldPath: 'userId', order: 'ASCENDING' }
-        ]
-      },
-      {
-        collectionId: 'exercises',
-        fields: [
-          { fieldPath: 'isCustom', order: 'ASCENDING' },
-          { fieldPath: 'userId', order: 'ASCENDING' },
-          { fieldPath: 'category', order: 'ASCENDING' }
-        ]
-      },
-      
-      // goals
+      // Goals
       {
         collectionId: 'goals',
         fields: [
@@ -98,13 +111,54 @@ async function createIndexes() {
           { fieldPath: 'createdAt', order: 'DESCENDING' }
         ]
       },
-      
-      // progressUpdates
       {
-        collectionId: 'progressUpdates',
+        collectionId: 'goals',
         fields: [
-          { fieldPath: 'goalId', order: 'ASCENDING' },
-          { fieldPath: 'createdAt', order: 'DESCENDING' }
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'completed', order: 'ASCENDING' },
+          { fieldPath: 'targetDate', order: 'ASCENDING' }
+        ]
+      },
+      
+      // Transactions
+      {
+        collectionId: 'transactions',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'date', order: 'DESCENDING' }
+        ]
+      },
+      {
+        collectionId: 'transactions',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'type', order: 'ASCENDING' },
+          { fieldPath: 'date', order: 'DESCENDING' }
+        ]
+      },
+      {
+        collectionId: 'transactions',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'category', order: 'ASCENDING' },
+          { fieldPath: 'date', order: 'DESCENDING' }
+        ]
+      },
+      
+      // Budgets
+      {
+        collectionId: 'budgets',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'month', order: 'DESCENDING' }
+        ]
+      },
+      {
+        collectionId: 'budgets',
+        fields: [
+          { fieldPath: 'userId', order: 'ASCENDING' },
+          { fieldPath: 'category', order: 'ASCENDING' },
+          { fieldPath: 'month', order: 'DESCENDING' }
         ]
       }
     ];
@@ -130,7 +184,7 @@ async function createIndexes() {
     console.error('Error in create-indexes script:', error);
   } finally {
     // Close the Firebase Admin app
-    admin.app().delete();
+    process.exit(0);
   }
 }
 

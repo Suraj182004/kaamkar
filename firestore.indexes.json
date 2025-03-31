@@ -71,21 +71,7 @@
       ]
     },
     {
-      "collectionGroup": "progressUpdates",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "goalId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "progressUpdates",
+      "collectionGroup": "notes",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -93,17 +79,7 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "goalId",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "todos",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "userId",
+          "fieldPath": "categoryId",
           "order": "ASCENDING"
         },
         {
@@ -113,7 +89,35 @@
       ]
     },
     {
-      "collectionGroup": "workoutRoutines",
+      "collectionGroup": "notes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "notes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "noteCategories",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -122,16 +126,84 @@
         },
         {
           "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "__name__",
-          "order": "DESCENDING"
+          "order": "ASCENDING"
         }
       ]
     },
     {
-      "collectionGroup": "workoutSessions",
+      "collectionGroup": "noteCategories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "parentId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "noteCategories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tasks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "completed",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "dueDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tasks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "completed",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "priority",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "dueDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "progress",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -145,7 +217,7 @@
       ]
     },
     {
-      "collectionGroup": "workoutSessions",
+      "collectionGroup": "goals",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -153,7 +225,21 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "routineId",
+          "fieldPath": "completed",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "targetDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "transactions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
           "order": "ASCENDING"
         },
         {
@@ -163,21 +249,7 @@
       ]
     },
     {
-      "collectionGroup": "exerciseSets",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "workoutSessionId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "setNumber",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "exerciseSets",
+      "collectionGroup": "transactions",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -185,7 +257,71 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "exerciseId",
+          "fieldPath": "type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "transactions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "category",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "budgets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "month",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "budgets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "category",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "month",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tasks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
           "order": "ASCENDING"
         },
         {
@@ -195,71 +331,44 @@
       ]
     },
     {
-      "collectionGroup": "exerciseSets",
+      "collectionGroup": "notes",
       "queryScope": "COLLECTION",
       "fields": [
-        {
-          "fieldPath": "userId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "exerciseId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "isPersonalRecord",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "ASCENDING" }
       ]
     },
     {
-      "collectionGroup": "exercises",
+      "collectionGroup": "events",
       "queryScope": "COLLECTION",
       "fields": [
-        {
-          "fieldPath": "isCustom",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "category",
-          "order": "ASCENDING"
-        }
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "startTime", "order": "ASCENDING" }
       ]
     },
     {
-      "collectionGroup": "exercises",
+      "collectionGroup": "finances",
       "queryScope": "COLLECTION",
       "fields": [
-        {
-          "fieldPath": "isCustom",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "userId",
-          "order": "ASCENDING"
-        }
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "month", "order": "ASCENDING" },
+        { "fieldPath": "year", "order": "ASCENDING" }
       ]
     },
     {
-      "collectionGroup": "exercises",
+      "collectionGroup": "planner",
       "queryScope": "COLLECTION",
       "fields": [
-        {
-          "fieldPath": "isCustom",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "userId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "category",
-          "order": "ASCENDING"
-        }
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "date", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "expenses",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "date", "order": "ASCENDING" }
       ]
     }
   ],

@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "buildCommand": "next build",
+  "devCommand": "next dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["all"],
+  "env": {
+    "NEXT_PUBLIC_FIREBASE_API_KEY": "AIzaSyBJbM5u_VHKVQ3W2yHXpeG6qX8iDr2vtE0",
+    "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN": "kaamkar-2bde9.firebaseapp.com",
+    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "kaamkar-2bde9",
+    "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET": "kaamkar-2bde9.firebasestorage.app",
+    "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "945091254206",
+    "NEXT_PUBLIC_FIREBASE_APP_ID": "1:945091254206:web:b964d67a59a4339746cbef",
+    "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-N3R98SJTSK",
+    "NEXT_PUBLIC_GEMINI_API_KEY": "AIzaSyDWIj2T_suzIbgu7KlsZwWifEfJHFjUprk"
+  }
+} 

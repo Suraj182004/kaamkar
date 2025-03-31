@@ -8,7 +8,15 @@ service cloud.firestore {
     }
     
     function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
+      return request.auth.uid == userId;
+    }
+    
+    function hasValidFields(requiredFields) {
+      return request.resource.data.keys().hasAll(requiredFields);
+    }
+    
+    function isValidTimestamp(field) {
+      return request.resource.data[field] is timestamp;
     }
     
     function isValidUser() {
@@ -21,17 +29,49 @@ service cloud.firestore {
 
     // User profiles
     match /users/{userId} {
-      allow read: if isSignedIn();
-      allow create: if isOwner(userId);
-      allow update: if isOwner(userId) || isAdmin();
-      allow delete: if isAdmin();
+      allow read: if isSignedIn() && isOwner(userId);
+      allow write: if isSignedIn() && isOwner(userId);
+    }
+    
+    // Tasks
+    match /tasks/{taskId} {
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['title', 'userId'])
+        && isValidTimestamp('createdAt');
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId);
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
     }
     
     // Notes
     match /notes/{noteId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['title', 'content', 'userId'])
+        && isValidTimestamp('createdAt')
+        && isValidTimestamp('updatedAt');
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId)
+        && isValidTimestamp('updatedAt');
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
+    }
+    
+    // Note Categories
+    match /noteCategories/{categoryId} {
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['name', 'userId'])
+        && isValidTimestamp('createdAt');
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId);
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
     }
     
     // Todos
@@ -43,16 +83,27 @@ service cloud.firestore {
     
     // Events/Calendar
     match /events/{eventId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['title', 'start', 'end', 'userId']);
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId);
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
     }
     
     // Progress Tracker (Goals)
     match /goals/{goalId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['title', 'userId'])
+        && isValidTimestamp('createdAt');
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId);
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
     }
     
     // Progress Updates
@@ -62,46 +113,28 @@ service cloud.firestore {
       allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
     
-    // GYM TRACKER RULES
-    
-    // Workout Routines
-    match /workoutRoutines/{routineId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    // Finance Tracker - Transactions
+    match /transactions/{transactionId} {
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['amount', 'type', 'date', 'userId']);
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId);
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
     }
     
-    // Workout Sessions
-    match /workoutSessions/{sessionId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
-    }
-    
-    // Exercises
-    match /exercises/{exerciseId} {
-      // Allow read for default exercises (isCustom == false) to all signed-in users
-      allow read: if isSignedIn() && (
-        !resource.data.isCustom || 
-        (resource.data.isCustom && resource.data.userId == request.auth.uid)
-      );
-      
-      // Allow creating custom exercises
-      allow create: if isSignedIn() && 
-        request.resource.data.isCustom == true && 
-        request.resource.data.userId == request.auth.uid;
-        
-      // Only allow updating/deleting your own custom exercises
-      allow update, delete: if isSignedIn() && 
-        resource.data.isCustom == true && 
-        resource.data.userId == request.auth.uid;
-    }
-    
-    // Exercise Sets
-    match /exerciseSets/{setId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    // Finance Tracker - Budgets
+    match /budgets/{budgetId} {
+      allow read: if isSignedIn() && isOwner(resource.data.userId);
+      allow create: if isSignedIn() 
+        && isOwner(request.resource.data.userId)
+        && hasValidFields(['amount', 'category', 'month', 'userId']);
+      allow update: if isSignedIn() 
+        && isOwner(resource.data.userId)
+        && isOwner(request.resource.data.userId);
+      allow delete: if isSignedIn() && isOwner(resource.data.userId);
     }
     
     // Remaining collections

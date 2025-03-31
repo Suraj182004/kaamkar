@@ -92,7 +92,7 @@ export function NoteList() {
 
       {notes.length === 0 && !isAdding ? (
         <div className="text-center py-8 text-muted-foreground">
-          <p>No notes yet. Click "Add New Note" to create one!</p>
+          <p>No notes yet. Click &quot;Add New Note&quot; to create one!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
