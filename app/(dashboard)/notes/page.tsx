@@ -30,7 +30,7 @@ export default function NotesPage() {
     if (user) {
       fetchNotes();
     }
-  }, [user]);
+  }, [user, fetchNotes]);
 
   const fetchNotes = async () => {
     if (!user) return;

@@ -6,7 +6,7 @@ import { Todo, addTodo, getUserTodos, updateTodo, toggleTodoCompletion, deleteTo
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Timestamp } from 'firebase/firestore';
@@ -27,7 +27,7 @@ export default function TodosPage() {
     if (user) {
       fetchTodos();
     }
-  }, [user]);
+  }, [user, fetchTodos]);
 
   const fetchTodos = async () => {
     if (!user) return;

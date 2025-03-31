@@ -25,7 +25,7 @@ export default function CategoryManager({ selectedCategory, onSelectCategory }: 
     if (user) {
       fetchCategories();
     }
-  }, [user]);
+  }, [user, fetchCategories]);
 
   const fetchCategories = async () => {
     if (!user) return;

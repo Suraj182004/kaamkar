@@ -34,7 +34,7 @@ export default function ProgressPage() {
     if (user) {
       fetchGoals();
     }
-  }, [user]);
+  }, [user, fetchGoals]);
 
   const fetchGoals = async () => {
     if (!user) return;

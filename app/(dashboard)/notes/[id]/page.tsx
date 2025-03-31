@@ -86,15 +86,7 @@ export default function NotePage({ params }: { params: Promise<{ id: string }> }
     return () => {
       debouncedGetSuggestions.cancel();
     };
-  }, [title, content, autoSuggest]);
-
-  useEffect(() => {
-    debouncedGetSuggestions();
-  }, [content, debouncedGetSuggestions]);
-
-  useEffect(() => {
-    debouncedGetSuggestions();
-  }, [selectedText, debouncedGetSuggestions]);
+  }, [title, content, autoSuggest, debouncedGetSuggestions]);
 
   const handleSave = async () => {
     if (!user) return;

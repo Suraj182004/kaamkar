@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Nav } from '@/components/layout/nav';
 import { Button } from '@/components/ui/button';
 import { Clock, Calendar, ChevronLeft, Share2, Bookmark } from 'lucide-react';
+import Image from 'next/image';
 
 // This would typically come from your CMS or database
 const post = {
@@ -112,9 +113,11 @@ export default function BlogPost() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <img
+              <Image
                 src={post.image}
                 alt={post.title}
+                width={1200}
+                height={675}
                 className="w-full rounded-xl mb-8"
               />
               <div className="prose prose-lg dark:prose-invert max-w-none"
@@ -146,9 +149,11 @@ export default function BlogPost() {
                 >
                   <h2 className="text-lg font-semibold mb-4">About the Author</h2>
                   <div className="flex items-center gap-4">
-                    <img
+                    <Image
                       src={post.author.image}
                       alt={post.author.name}
+                      width={48}
+                      height={48}
                       className="w-12 h-12 rounded-full"
                     />
                     <div>
@@ -169,9 +174,11 @@ export default function BlogPost() {
                   <div className="space-y-4">
                     {post.relatedPosts.map((relatedPost) => (
                       <div key={relatedPost.title} className="group">
-                        <img
+                        <Image
                           src={relatedPost.image}
                           alt={relatedPost.title}
+                          width={500}
+                          height={300}
                           className="w-full aspect-video rounded-lg object-cover mb-2"
                         />
                         <span className="text-xs text-primary">{relatedPost.category}</span>

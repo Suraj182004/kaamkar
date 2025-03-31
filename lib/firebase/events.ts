@@ -12,6 +12,7 @@ import {
   Timestamp 
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { FirebaseError } from 'firebase/app';
 
 // Type for Event
 export interface Event {
@@ -90,13 +91,13 @@ export async function getEventsByDateRange(userId: string, startDate: Date, endD
         id: doc.id,
         ...doc.data()
       })) as Event[];
-    } catch (error: any) {
+    } catch (error: unknown) {
       // If we get an index error, provide clear instructions
-      if (error?.name === 'FirebaseError' && error?.message?.includes('requires an index')) {
-        console.error('Firestore index error:', error?.message);
+      if (error instanceof FirebaseError && error.message.includes('requires an index')) {
+        console.error('Firestore index error:', error.message);
         
         // Extract the index creation URL if it exists in the error message
-        const indexUrlMatch = error?.message?.match(/(https:\/\/console\.firebase\.google\.com\S+)/);
+        const indexUrlMatch = error.message.match(/(https:\/\/console\.firebase\.google\.com\S+)/);
         const indexUrl = indexUrlMatch ? indexUrlMatch[1] : null;
         
         // Throw a more helpful error
