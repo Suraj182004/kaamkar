@@ -2,6 +2,45 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { LayoutDashboard, CalendarIcon, FileText, PiggyBank, BookOpen, Settings, MessageSquare } from 'lucide-react';
+
+const navItems = [
+  {
+    name: 'Dashboard',
+    path: '/dashboard',
+    icon: <LayoutDashboard />
+  },
+  {
+    name: 'Calendar',
+    path: '/calendar',
+    icon: <CalendarIcon />
+  },
+  {
+    name: 'Tasks',
+    path: '/tasks',
+    icon: <FileText />
+  },
+  {
+    name: 'Notes',
+    path: '/notes',
+    icon: <BookOpen />
+  },
+  {
+    name: 'Finance',
+    path: '/finance',
+    icon: <PiggyBank />
+  },
+  {
+    name: 'Blog',
+    path: '/blog',
+    icon: <MessageSquare />
+  },
+  {
+    name: 'Settings',
+    path: '/settings',
+    icon: <Settings />
+  }
+];
 
 export default function Sidebar() {
   const pathname = usePathname();
