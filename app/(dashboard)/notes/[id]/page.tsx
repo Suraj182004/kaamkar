@@ -88,6 +88,14 @@ export default function NotePage({ params }: { params: Promise<{ id: string }> }
     };
   }, [title, content, autoSuggest]);
 
+  useEffect(() => {
+    debouncedGetSuggestions();
+  }, [content, debouncedGetSuggestions]);
+
+  useEffect(() => {
+    debouncedGetSuggestions();
+  }, [selectedText, debouncedGetSuggestions]);
+
   const handleSave = async () => {
     if (!user) return;
     if (!title.trim()) {

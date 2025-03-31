@@ -5,6 +5,7 @@ import { Nav } from '@/components/layout/nav';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Award, Heart, BarChart, Users, Mail } from 'lucide-react';
+import Image from 'next/image';
 
 const stats = [
   { number: '2023', label: 'Founded', icon: Award },
@@ -63,7 +64,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              We're on a mission to help individuals and teams achieve more by providing powerful,
+              We&apos;re on a mission to help individuals and teams achieve more by providing powerful,
               intuitive tools for better productivity and organization.
             </motion.p>
           </div>
@@ -116,8 +117,8 @@ export default function AboutPage() {
                     and goal setting into one seamless experience.
                   </p>
                   <p>
-                    Today, we're proud to help thousands of users stay organized, focused, and
-                    productive. But we're just getting started - we continue to innovate and improve
+                    Today, we&apos;re proud to help thousands of users stay organized, focused, and
+                    productive. But we&apos;re just getting started - we continue to innovate and improve
                     our platform based on user feedback and emerging technologies.
                   </p>
                 </div>
@@ -151,7 +152,7 @@ export default function AboutPage() {
                       </span>
                       <div>
                         <h4 className="font-semibold">Privacy & Security</h4>
-                        <p className="text-muted-foreground">Your data's security is our top priority</p>
+                        <p className="text-muted-foreground">Your data&apos;s security is our top priority</p>
                       </div>
                     </li>
                   </ul>
@@ -185,9 +186,11 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
+                    width={96}
+                    height={96}
                     className="w-24 h-24 rounded-full mx-auto mb-4"
                   />
                   <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
@@ -209,7 +212,7 @@ export default function AboutPage() {
             >
               <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Have questions or feedback? We'd love to hear from you.
+                Have questions or feedback? We&apos;d love to hear from you.
               </p>
               <Button size="lg" className="bg-gradient-to-r from-primary to-violet-600 hover:from-primary/90 hover:to-violet-600/90">
                 <Mail className="w-5 h-5 mr-2" />

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: kaamkar
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        value: AIzaSyBJbM5u_VHKVQ3W2yHXpeG6qX8iDr2vtE0
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        value: kaamkar-2bde9.firebaseapp.com
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        value: kaamkar-2bde9
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        value: kaamkar-2bde9.firebasestorage.app
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        value: "945091254206"
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        value: 1:945091254206:web:b964d67a59a4339746cbef
+      - key: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+        value: G-N3R98SJTSK
+      - key: NEXT_PUBLIC_GEMINI_API_KEY
+        value: AIzaSyDWIj2T_suzIbgu7KlsZwWifEfJHFjUprk 

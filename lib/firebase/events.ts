@@ -120,12 +120,22 @@ export async function getEventsByDateRange(userId: string, startDate: Date, endD
 /**
  * Update an existing event
  */
-export async function updateEvent(eventId: string, eventData: Partial<Omit<Event, 'id' | 'userId' | 'createdAt'>>) {
+export const updateEvent = async (
+  eventId: string,
+  data: {
+    title?: string;
+    description?: string;
+    startDate?: Date;
+    endDate?: Date;
+    completed?: boolean;
+    category?: string;
+  }
+) => {
   try {
     const eventRef = doc(db, 'events', eventId);
     
     const updatedData = {
-      ...eventData,
+      ...data,
       updatedAt: serverTimestamp()
     };
     

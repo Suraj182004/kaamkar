@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { Nav } from '@/components/layout/nav';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Clock, Tag, ChevronRight } from 'lucide-react';
+import { Clock, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 const categories = [
   { name: 'Productivity', count: 12 },
@@ -131,9 +131,11 @@ export default function BlogPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="aspect-video relative overflow-hidden">
-                      <img
+                      <Image
                         src={post.image}
                         alt={post.title}
+                        width={500}
+                        height={300}
                         className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute top-4 left-4">

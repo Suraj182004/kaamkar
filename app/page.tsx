@@ -23,11 +23,10 @@ export default function LandingPage() {
 
   // Only redirect to dashboard on initial mount if user exists
   useEffect(() => {
-    const isInitialMount = true;
-    if (user && isInitialMount) {
+    if (user) {
       router.push('/dashboard');
     }
-  }, []);  // Empty dependency array for initial mount only
+  }, [router, user]); // Add router and user to dependency array
 
   const features: Feature[] = [
     {
