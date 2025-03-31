@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState, use, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { getNoteById, updateNote, addNote } from '@/lib/firebase/notes';
@@ -27,6 +27,25 @@ export default function NotePage({ params }: { params: Promise<{ id: string }> }
   const [loadingAi, setLoadingAi] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [autoSuggest, setAutoSuggest] = useState(false);
+
+  // Debounced function for auto-suggestions using useCallback
+  const debouncedGetSuggestions = useCallback(
+    debounce(async (title: string, content: string) => {
+      if (!title.trim() || !content.trim()) return;
+      
+      try {
+        setLoadingAi(true);
+        const suggestions = await suggestNoteImprovements(title, content);
+        setAiSuggestions(suggestions);
+      } catch (error) {
+        console.error('Error getting AI suggestions:', error);
+        toast.error('Failed to get AI suggestions');
+      } finally {
+        setLoadingAi(false);
+      }
+    }, 2000),
+    []
+  );
 
   // Fetch note data when component mounts or params change
   useEffect(() => {
@@ -60,23 +79,7 @@ export default function NotePage({ params }: { params: Promise<{ id: string }> }
     };
 
     fetchNote();
-  }, [user, resolvedParams.id, router, autoSuggest]);
-
-  // Debounced function for auto-suggestions
-  const debouncedGetSuggestions = debounce(async (title: string, content: string) => {
-    if (!title.trim() || !content.trim()) return;
-    
-    try {
-      setLoadingAi(true);
-      const suggestions = await suggestNoteImprovements(title, content);
-      setAiSuggestions(suggestions);
-    } catch (error) {
-      console.error('Error getting AI suggestions:', error);
-      toast.error('Failed to get AI suggestions');
-    } finally {
-      setLoadingAi(false);
-    }
-  }, 2000);
+  }, [user, resolvedParams.id, router, autoSuggest, debouncedGetSuggestions]);
 
   // Effect for auto-suggestions
   useEffect(() => {

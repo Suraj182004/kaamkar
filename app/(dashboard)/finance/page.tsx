@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { LoadingSpinner } from '@/components/ui/loading';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { 
   getUserTransactions, 
@@ -102,7 +103,29 @@ export default function FinancePage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-3xl font-bold">Finance Tracker</h1>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
+          <div className="mr-2">
+            <Select
+              value={selectedMonth}
+              onValueChange={(value) => setSelectedMonth(value)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select month" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from({ length: 12 }, (_, i) => {
+                  const date = new Date();
+                  date.setMonth(date.getMonth() - 6 + i);
+                  const value = format(date, 'yyyy-MM');
+                  return (
+                    <SelectItem key={value} value={value}>
+                      {format(date, 'MMMM yyyy')}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+          </div>
           <Dialog open={showTransactionDialog} onOpenChange={setShowTransactionDialog}>
             <DialogTrigger asChild>
               <Button>Add Transaction</Button>
